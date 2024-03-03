@@ -1,11 +1,11 @@
 {
-    "name": "Bezier-Play",
+    "name": "Bezier Play",
     "short_name": "BezierPlay",
     "description": "A Bezier curve application. Allows you to move control points and see the (16) segments of the curve.",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#EEE",
-    "theme_color": "#a3a711",
+    "theme_color": "#4db0bb",
     "icons": [
       {
         "src": "/icon192x192.png",

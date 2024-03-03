@@ -68,10 +68,11 @@ const drawSegments = (segments) => {
         ctx.stroke();
     }
 };
+let recursivelevel = 4
 const drawBezierCurve = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.strokeStyle = '#666666'; // Gray color for the approximation
-    const segments = subdivideBezier(ctx, 4, points[0], points[1], points[2], points[3], []);
+    const segments = subdivideBezier(ctx, recursivelevel, points[0], points[1], points[2], points[3], []);
     drawSegments(segments);
 
     // Draw the control points
@@ -184,6 +185,20 @@ function changeCanvasSize(newWidth, newHeight) {
 
 // Attach the event listener to the resize event
 window.addEventListener('resize', handleResize);
+const moreSudivs = (e) => {
+    recursivelevel = Math.min(8, recursivelevel + 1);
+    document.getElementById('recursivelevel').innerText = recursivelevel+'';
+    drawBezierCurve();
+}
+const lessSudivs = (e) => {
+    recursivelevel = Math.max(0, recursivelevel - 1);
+    document.getElementById('recursivelevel').innerText = recursivelevel+'';
+    drawBezierCurve();
+}
+document.getElementById('less').addEventListener('touchstart', lessSudivs)
+document.getElementById('more').addEventListener('touchstart', moreSudivs)
+document.getElementById('less').addEventListener('click', lessSudivs)
+document.getElementById('more').addEventListener('click', moreSudivs)
 
 handleResize()
 // Initial draw

@@ -7,27 +7,39 @@
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" href="favicon.png">
-    <title>Bezier Curve</title>
+    <title>Bezier Play</title>
     <style>
         body {
-            width: 100%;
+            color: #011f22 width: 100%;
             margin: 0;
             padding: 0;
         }
+
         @media only screen and (max-width: 600px) {
-           /* Styles for screens less than 600px wide */
+            /* Styles for screens less than 600px wide */
 
         }
 
         canvas {
             border: 1px solid #000;
         }
+        p {
+            margin:3px;
+        }
+
+        .container {
+            display: flex;
+        }
     </style>
 </head>
 
 <body>
     <canvas id="bezierCanvas" width="400" height="600"></canvas>
-
+    <div class="container">
+        <button id="less">less</button>
+        <p>recursively subdivide the curve <span id="recursivelevel">4</span> times</p>
+        <button id="more">more</button>
+    </div>
     <script src="index.js"></script>
 </body>
 
