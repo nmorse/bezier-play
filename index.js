@@ -123,32 +123,36 @@ function mouseDown(event) {
             const drag_offset = [event.clientX - canvas.getBoundingClientRect().left - point.x, event.clientY - canvas.getBoundingClientRect().top - point.y]
             function handleMouseMove(e) { handleDrag(i, e, drag_offset); }
             function handleMouseUp() {
-                document.removeEventListener('mousemove', handleMouseMove);
-                document.removeEventListener('mouseup', handleMouseUp);
+                canvas.removeEventListener('mousemove', handleMouseMove);
+                canvas.removeEventListener('mouseup', handleMouseUp);
             }
 
-            document.addEventListener('mousemove', handleMouseMove);
-            document.addEventListener('mouseup', handleMouseUp);
+            canvas.addEventListener('mousemove', handleMouseMove);
+            canvas.addEventListener('mouseup', handleMouseUp);
             break
         }
     }
 }
-function touchDown(event) {
-    for (let i = 0; i < 4; i++) {
-        const point = points[i];
-        const distance = Math.sqrt((event.clientX - canvas.getBoundingClientRect().left - point.x) ** 2 + (event.clientY - canvas.getBoundingClientRect().top - point.y) ** 2);
-        if (distance < 50) { // Assuming a radius of 10 for the control points
-            // Attach event listeners for drag and release
-            const drag_offset = [event.clientX - canvas.getBoundingClientRect().left - point.x, event.clientY - canvas.getBoundingClientRect().top - point.y]
-            function handleMouseMove(e) { handleDrag(i, e, drag_offset); }
-            function handleMouseUp() {
-                document.removeEventListener('touchmove', handleMouseMove);
-                document.removeEventListener('touchend', handleMouseUp);
-            }
+function touchDown(e) {
+    if (e.touches) {
+        const clientX = e.touches[0].clientX
+        const clientY = e.touches[0].clientY
+        for (let i = 0; i < 4; i++) {
+            const point = points[i];
+            const distance = Math.sqrt((clientX - canvas.getBoundingClientRect().left - point.x) ** 2 + (clientY - canvas.getBoundingClientRect().top - point.y) ** 2);
+            if (distance < 50) { // Assuming a radius of 10 for the control points
+                // Attach event listeners for drag and release
+                const drag_offset = [clientX - canvas.getBoundingClientRect().left - point.x, clientY - canvas.getBoundingClientRect().top - point.y]
+                function handleTouchMove(e) { handleDrag(i, e, drag_offset); }
+                function handleTouchUp() {
+                    canvas.removeEventListener('touchmove', handleTouchMove);
+                    canvas.removeEventListener('touchend', handleTouchUp);
+                }
 
-            document.addEventListener('touchmove', handleMouseMove);
-            document.addEventListener('touchend', handleMouseUp);
-            break
+                canvas.addEventListener('touchmove', handleTouchMove);
+                canvas.addEventListener('touchend', handleTouchUp);
+                break
+            }
         }
     }
 }
@@ -164,13 +168,13 @@ function handleResize() {
     const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
     const viewportWidthRatio = viewportWidth / 400;
     const viewportHeightRatio = viewportHeight / 600;
-    
+
     if (viewportWidthRatio < 1.0 || viewportHeightRatio < 1.0) {
         if (viewportWidthRatio < viewportHeightRatio) {
-            changeCanvasSize(viewportWidth, Math.floor(600.0*viewportWidthRatio));
+            changeCanvasSize(viewportWidth, Math.floor(600.0 * viewportWidthRatio));
         }
         else {
-            changeCanvasSize(Math.floor(400*viewportHeightRatio), viewportHeight);
+            changeCanvasSize(Math.floor(400 * viewportHeightRatio), viewportHeight);
         }
         drawBezierCurve();
     }
@@ -187,12 +191,12 @@ function changeCanvasSize(newWidth, newHeight) {
 window.addEventListener('resize', handleResize);
 const moreSudivs = (e) => {
     recursivelevel = Math.min(8, recursivelevel + 1);
-    document.getElementById('recursivelevel').innerText = recursivelevel+'';
+    document.getElementById('recursivelevel').innerText = recursivelevel + '';
     drawBezierCurve();
 }
 const lessSudivs = (e) => {
     recursivelevel = Math.max(0, recursivelevel - 1);
-    document.getElementById('recursivelevel').innerText = recursivelevel+'';
+    document.getElementById('recursivelevel').innerText = recursivelevel + '';
     drawBezierCurve();
 }
 document.getElementById('less').addEventListener('touchstart', lessSudivs)
